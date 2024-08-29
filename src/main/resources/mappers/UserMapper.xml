@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lizhongbin.mybaking.mapper.UserMapper">
+    <select id="selectUserinfoByUsername" resultType="cn.lizhongbin.mybaking.pojo.vo.UserVO">
+        SELECT id, username, nickname, is_admin, img_url
+        FROM t_user
+        WHERE username = #{username}
+        -- 注意，注释请使用双横杠，不可使用井号
+        -- 使用井号加大括号来表参，而不是美元加大括号，因为井号式为预编译，而美元式可接受SQL语句，有被恶意注入的风险
+    </select>
+</mapper>
