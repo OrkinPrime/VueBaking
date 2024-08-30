@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lizhongbin.mybaking.mapper.UserMapper">
     <select id="selectUserinfoByUsername" resultType="cn.lizhongbin.mybaking.pojo.vo.UserVO">
-        SELECT id, username, nickname, is_admin, img_url
+        SELECT id, username,password, nickname, is_admin, img_url
         FROM t_user
         WHERE username = #{username}
         -- 注意，注释请使用双横杠，不可使用井号

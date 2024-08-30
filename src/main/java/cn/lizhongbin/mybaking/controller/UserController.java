@@ -1,15 +1,13 @@
 package cn.lizhongbin.mybaking.controller;
 
 import cn.lizhongbin.mybaking.mapper.UserMapper;
+import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
 import cn.lizhongbin.mybaking.response.JsonResult;
 import cn.lizhongbin.mybaking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 //二合一注解：@RestController==@Controller+@ResponseBody
@@ -31,9 +29,14 @@ public class UserController {
 
 //默认解析成视图，即以页面形式进行返回
 //添加注解@ResponseBody，返回的结果则变为正文，不再以页面形式返回
-    @GetMapping("/info")
+    @GetMapping("info")
     public JsonResult getUserInfo(String username) {
         UserVO useinfo= userService.findUserinfoByUsername(username);
         return JsonResult.ok(useinfo);
+    }
+    @PostMapping("login")
+    public JsonResult login(UserLoginDTO userLoginDTO) {
+        userService.loginValidate(userLoginDTO);
+        return JsonResult.ok();
     }
 }

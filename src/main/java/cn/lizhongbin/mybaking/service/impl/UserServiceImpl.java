@@ -2,6 +2,7 @@ package cn.lizhongbin.mybaking.service.impl;
 
 import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.mapper.UserMapper;
+import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
 import cn.lizhongbin.mybaking.response.ServiceCode;
 import cn.lizhongbin.mybaking.service.UserService;
@@ -33,5 +34,16 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(ServiceCode.ERR_SELECT,"用户不存在");
         }
         return userVO;
+    }
+
+    @Override
+    public void loginValidate(UserLoginDTO userLoginDTO) {
+        UserVO userVO = userMapper.selectUserinfoByUsername(userLoginDTO.getUsername());
+        if (userVO == null) {
+            throw new ServiceException(ServiceCode.ERR_SELECT,"用户不存在");
+        }
+        if (!userLoginDTO.getPassword().equals(userVO.getPassword())) {
+            throw new ServiceException(ServiceCode.ERR_SELECT,"用户名或密码错误");
+        }
     }
 }

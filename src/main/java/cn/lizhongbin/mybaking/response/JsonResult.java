@@ -37,7 +37,7 @@ public class JsonResult<T> implements Serializable {
 
     public static JsonResult fail(ServiceException e) {
         JsonResult result = new JsonResult();
-        result.setCode(ServiceCode.ERR_SELECT.getValue()).setMsg("用户不存在").setData(null);
+        result.setCode(e.getServiceCode().getValue()).setMsg(e.getMessage()).setData(null);
         return result;
     }
 
