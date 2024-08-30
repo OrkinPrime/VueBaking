@@ -2,6 +2,7 @@ package cn.lizhongbin.mybaking.controller;
 
 import cn.lizhongbin.mybaking.mapper.UserMapper;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
+import cn.lizhongbin.mybaking.response.JsonResult;
 import cn.lizhongbin.mybaking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,8 @@ public class UserController {
 //默认解析成视图，即以页面形式进行返回
 //添加注解@ResponseBody，返回的结果则变为正文，不再以页面形式返回
     @GetMapping("/info")
-    public UserVO getUserInfo(String username) {
-        return  userService.findUserinfoByUsername(username);
+    public JsonResult getUserInfo(String username) {
+        UserVO useinfo= userService.findUserinfoByUsername(username);
+        return JsonResult.ok(useinfo);
     }
 }

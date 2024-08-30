@@ -1,12 +1,15 @@
 package cn.lizhongbin.mybaking.service.impl;
 
+import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.mapper.UserMapper;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
+import cn.lizhongbin.mybaking.response.ServiceCode;
 import cn.lizhongbin.mybaking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.rowset.serial.SerialException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,12 +21,17 @@ public class UserServiceImpl implements UserService {
     //从类型出发，查找时遇到同类型会出错【推荐】
     @Autowired
     private UserMapper userMapper;
-/*    //从名称出发，需要标注注入目标的名称,不指定名称则以注入的类为名称【不推荐】
-    @Resource()
-    private UserMapper userMapper;*/
+
+    /*    //从名称出发，需要标注注入目标的名称,不指定名称则以注入的类为名称【不推荐】
+        @Resource()
+        private UserMapper userMapper;*/
     @Override
 //    重写要求：两同两小一大
     public UserVO findUserinfoByUsername(String username) {
-        return userMapper.selectUserinfoByUsername(username);
+        UserVO userVO = userMapper.selectUserinfoByUsername(username);
+        if (userVO == null) {
+            throw new ServiceException(ServiceCode.ERR_SELECT,"用户不存在");
+        }
+        return userVO;
     }
 }
