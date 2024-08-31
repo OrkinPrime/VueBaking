@@ -3,14 +3,13 @@ package cn.lizhongbin.mybaking.service.impl;
 import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.mapper.UserMapper;
 import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
+import cn.lizhongbin.mybaking.pojo.vo.UserLoginVO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
 import cn.lizhongbin.mybaking.response.ServiceCode;
 import cn.lizhongbin.mybaking.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import javax.sql.rowset.serial.SerialException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginValidate(UserLoginDTO userLoginDTO) {
+    public UserLoginVO loginValidate(UserLoginDTO userLoginDTO) {
         UserVO userVO = userMapper.selectUserinfoByUsername(userLoginDTO.getUsername());
         if (userVO == null) {
             throw new ServiceException(ServiceCode.ERR_SELECT,"用户不存在");
@@ -45,5 +44,9 @@ public class UserServiceImpl implements UserService {
         if (!userLoginDTO.getPassword().equals(userVO.getPassword())) {
             throw new ServiceException(ServiceCode.ERR_SELECT,"用户名或密码错误");
         }
+        UserLoginVO userLoginVO = new UserLoginVO();
+        //将前者属性copy到后者
+        BeanUtils.copyProperties(userVO, userLoginVO);
+        return userLoginVO;
     }
 }

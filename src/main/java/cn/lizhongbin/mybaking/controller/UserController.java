@@ -1,13 +1,21 @@
 package cn.lizhongbin.mybaking.controller;
 
+import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.mapper.UserMapper;
 import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
+import cn.lizhongbin.mybaking.pojo.vo.UserLoginVO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
 import cn.lizhongbin.mybaking.response.JsonResult;
+import cn.lizhongbin.mybaking.response.ServiceCode;
 import cn.lizhongbin.mybaking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
 //二合一注解：@RestController==@Controller+@ResponseBody
@@ -27,16 +35,45 @@ public class UserController {
         @Resource()
         private UserMapper userMapper;*/
 
-//默认解析成视图，即以页面形式进行返回
+    Map<String, Integer> map = new HashMap();
+
+    //默认解析成视图，即以页面形式进行返回
 //添加注解@ResponseBody，返回的结果则变为正文，不再以页面形式返回
     @GetMapping("info")
     public JsonResult getUserInfo(String username) {
-        UserVO useinfo= userService.findUserinfoByUsername(username);
+        UserVO useinfo = userService.findUserinfoByUsername(username);
         return JsonResult.ok(useinfo);
     }
+
     @PostMapping("login")
-    public JsonResult login(UserLoginDTO userLoginDTO) {
-        userService.loginValidate(userLoginDTO);
+    public JsonResult login(UserLoginDTO userLoginDTO, HttpServletRequest request) {
+        String ip = request.getRemoteAddr();
+        String key = ip + userLoginDTO.getUsername();
+        if (map.containsKey(key)) {
+            Integer i = map.get(key);
+            if (i == 3) {
+                throw new ServiceException(ServiceCode.ERR_SELECT, "账号已被锁定，请联系管理员");
+            }
+            map.put(key, ++i);
+        } else {
+            map.put(key, 1);
+        }
+        UserLoginVO userLoginVO = userService.loginValidate(userLoginDTO);
+        map.remove(key);
+        return JsonResult.ok(userLoginVO);
+    }
+
+    @GetMapping("reset")
+    public JsonResult resetStatus(String username) {
+        Set<String> keys = map.keySet();
+        for (String key : keys) {
+            if (key.endsWith(username)) {
+                map.remove(key);
+            }
+        }
         return JsonResult.ok();
     }
+
+/*    @PostMapping("reg")
+    public JsonResult reg()*/
 }
