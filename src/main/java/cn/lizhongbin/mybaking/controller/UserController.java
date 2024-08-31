@@ -1,15 +1,14 @@
 package cn.lizhongbin.mybaking.controller;
 
 import cn.lizhongbin.mybaking.exception.ServiceException;
-import cn.lizhongbin.mybaking.mapper.UserMapper;
 import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
+import cn.lizhongbin.mybaking.pojo.dto.UserRegDTO;
 import cn.lizhongbin.mybaking.pojo.vo.UserLoginVO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
 import cn.lizhongbin.mybaking.response.JsonResult;
 import cn.lizhongbin.mybaking.response.ServiceCode;
 import cn.lizhongbin.mybaking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,7 @@ public class UserController {
 //添加注解@ResponseBody，返回的结果则变为正文，不再以页面形式返回
     @GetMapping("info")
     public JsonResult getUserInfo(String username) {
-        UserVO useinfo = userService.findUserinfoByUsername(username);
+        UserVO useinfo = userService.getUserInfoByUsername(username);
         return JsonResult.ok(useinfo);
     }
 
@@ -58,7 +57,7 @@ public class UserController {
         } else {
             map.put(key, 1);
         }
-        UserLoginVO userLoginVO = userService.loginValidate(userLoginDTO);
+        UserLoginVO userLoginVO = userService.validateLogin(userLoginDTO);
         map.remove(key);
         return JsonResult.ok(userLoginVO);
     }
@@ -74,6 +73,9 @@ public class UserController {
         return JsonResult.ok();
     }
 
-/*    @PostMapping("reg")
-    public JsonResult reg()*/
+    @PostMapping("reg")
+    public JsonResult reg(UserRegDTO userRegDTO, HttpServletRequest request) {
+        userService.createUserAccount(userRegDTO);
+        return JsonResult.ok();
+    }
 }

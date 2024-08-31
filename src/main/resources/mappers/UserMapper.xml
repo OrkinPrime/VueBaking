@@ -10,4 +10,8 @@
         -- 注意，注释请使用双横杠，不可使用井号
         -- 使用井号加大括号来表参，而不是美元加大括号，因为井号式为预编译，而美元式可接受SQL语句，有被恶意注入的风险
     </select>
+    <insert id="insertUser" >
+        INSERT INTO t_user(username, nickname, password, is_admin, create_time)
+        values (#{username},#{nickname},#{password},#{isAdmin},#{createTime})
+    </insert>
 </mapper>
