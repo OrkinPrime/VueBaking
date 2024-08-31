@@ -7,7 +7,7 @@ spring:
   web:
     resources:
 #静态资源路径
-      static-locations: file:D:/web/Vue/Java/myBaking,classpath:/static
+      static-locations: file:D:/web/Vue/Java/myBaking/op/images,classpath:/static
 #文件上传大小限制
   servlet:
     multipart:
@@ -19,3 +19,6 @@ mybatis:
 # 驼峰映射-数据字段和类属性的匹配
   configuration:
     map-underscore-to-camel-case: true
+
+local:
+  address: D:/web/Vue/Java/myBaking/op/images

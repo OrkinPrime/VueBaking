@@ -41,4 +41,9 @@ public class JsonResult<T> implements Serializable {
         return result;
     }
 
+    public static JsonResult fail(ServiceCode serviceCode, String msg) {
+        JsonResult result = new JsonResult();
+        result.setCode(serviceCode.getValue()).setMsg(msg).setData(null);
+        return result;
+    }
 }
