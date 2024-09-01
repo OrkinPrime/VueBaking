@@ -14,4 +14,25 @@
         INSERT INTO t_user(username, nickname, password, is_admin, create_time)
         values (#{username},#{nickname},#{password},#{isAdmin},#{createTime})
     </insert>
+    <update id="updateUser">
+        update t_user
+        <set>
+            <if test="nickname !=null and nickname !='' ">
+                nickname = #{nickname},
+            </if>
+            <if test="password !=null and password !='' ">
+                password = #{password},
+            </if>
+            <if test="imgUrl !=null and imgUrl !='' ">
+                img_url = #{imgUrl},
+            </if>
+            <if test="isAdmin !=null and isAdmin !='' ">
+                is_admin = #{isAdmin}
+            </if>
+        </set>
+        where username = #{username}
+    </update>
+    <update id="removeImgByUsername">
+        update t_user set img_url=null where username = #{username}
+    </update>
 </mapper>

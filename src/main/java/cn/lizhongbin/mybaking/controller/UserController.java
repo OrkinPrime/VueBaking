@@ -3,6 +3,7 @@ package cn.lizhongbin.mybaking.controller;
 import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
 import cn.lizhongbin.mybaking.pojo.dto.UserRegDTO;
+import cn.lizhongbin.mybaking.pojo.dto.UserUpdateDTO;
 import cn.lizhongbin.mybaking.pojo.vo.UserLoginVO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
 import cn.lizhongbin.mybaking.response.JsonResult;
@@ -76,6 +77,11 @@ public class UserController {
     @PostMapping("reg")
     public JsonResult reg(UserRegDTO userRegDTO, HttpServletRequest request) {
         userService.createUserAccount(userRegDTO);
+        return JsonResult.ok();
+    }
+    @PostMapping("update")
+    public JsonResult updateUserinfo(UserUpdateDTO userUpdateDTO){
+        userService.updateUserinfo(userUpdateDTO);
         return JsonResult.ok();
     }
 }

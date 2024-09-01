@@ -4,6 +4,7 @@ import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.mapper.UserMapper;
 import cn.lizhongbin.mybaking.pojo.dto.UserLoginDTO;
 import cn.lizhongbin.mybaking.pojo.dto.UserRegDTO;
+import cn.lizhongbin.mybaking.pojo.dto.UserUpdateDTO;
 import cn.lizhongbin.mybaking.pojo.entity.User;
 import cn.lizhongbin.mybaking.pojo.vo.UserLoginVO;
 import cn.lizhongbin.mybaking.pojo.vo.UserVO;
@@ -70,5 +71,19 @@ public class UserServiceImpl implements UserService {
         //测试输出
         System.out.println(user);
         return true;
+    }
+
+    @Override
+    public void updateUserinfo(UserUpdateDTO userUpdateDTO) {
+       Integer result = userMapper.updateUser(userUpdateDTO);
+       if(result!=1){
+            throw new ServiceException(ServiceCode.ERR_UPDATE,"修改失败");
+       }
+    }
+
+    @Override
+    public void removeImgByUsername(UserUpdateDTO updateDTO){
+        if(userMapper.removeImgByUsername(updateDTO)!=1)
+            throw new ServiceException(ServiceCode.ERR_DELETE, "删除失败");
     }
 }
