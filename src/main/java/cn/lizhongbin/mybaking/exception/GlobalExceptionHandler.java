@@ -18,6 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public JsonResult handleException(Exception e) {
+        e.printStackTrace();
         return JsonResult.fail(ServiceCode.ERR_UNKNOWN,"未知错误");
     }
 }
