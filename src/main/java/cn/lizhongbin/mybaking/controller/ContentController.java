@@ -18,7 +18,7 @@ public class ContentController {
     @PostMapping("/add-new")
     public JsonResult addNewContent(ContentDTO contentDTO) {
         contentService.addContent(contentDTO);
-        System.out.println(contentDTO);
+        //System.out.println(contentDTO);
         return JsonResult.ok();
     }
 
@@ -37,7 +37,7 @@ public class ContentController {
     @GetMapping("/{id}/content")
     public JsonResult getContent(@PathVariable Long id) {
         ContentVO contentVO = contentService.getContentById(id);
-        System.out.println(contentVO);
+        //System.out.println(contentVO);
         return JsonResult.ok(contentVO);
     }
 }

@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //测试输出
-        System.out.println(user);
+        //System.out.println(user);
         return true;
     }
 
