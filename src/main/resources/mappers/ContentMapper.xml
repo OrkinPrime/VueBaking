@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lizhongbin.mybaking.mapper.ContentMapper">
+    <insert id="insertContent">
+        insert into t_content
+        (title,
+         img_url,
+         video_url,
+         content,
+         type,
+         view_count,
+         comment_count,
+         create_by,
+         create_time,
+         brief,
+         category_id)
+        values (#{title}, #{imgUrl}, #{videoUrl}, #{content}, #{type}, #{viewCount}, #{commentCount}, #{createBy},
+                #{createTime}, #{brief}, #{categoryId});
+    </insert>
+    <select id="selectContentsByCreatByAndType" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentVO">
+        select t2.id,
+               title,
+               brief,
+               img_url,
+               t2.type,
+               view_count,
+               comment_count,
+               t2.create_time,
+               t1.name as categoryName
+        from t_category t1
+                 join t_content t2
+                      on t1.id = t2.category_id
+        where t2.create_by = #{id}
+          and t2.type = #{type}
+        order by create_time
+                DESC
+    </select>
+    <delete id="deleteContentsById">
+        delete from t_content where id = #{contentId}
+    </delete>
+    <delete id="deleteCommentsByContentId">
+        delete from t_comment where content_id = #{contentId}
+    </delete>
+    <select id="selectImgUrlByContentId">
+        select t_content.img_url from t_content where id = #{contentId}
+    </select>
+    <select id="selectVideoUrlByContentId">
+        select t_content.video_url from t_content where id = #{contentId}
+    </select>
+</mapper>

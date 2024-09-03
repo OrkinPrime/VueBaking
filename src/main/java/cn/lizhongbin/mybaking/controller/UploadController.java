@@ -36,8 +36,8 @@ public class UploadController {
     public JsonResult removeFile(String url, UserUpdateDTO userUpdateDTO) {//前端传来url
         //拼接形成对后端的url
         new File(fileUrl+url).delete();
-        System.out.println(userUpdateDTO.toString());
-        userService.removeImgByUsername(userUpdateDTO);
+        if(userUpdateDTO.getUsername()!=null)
+            userService.removeImgByUsername(userUpdateDTO);
         return JsonResult.ok();
     }
 
