@@ -11,4 +11,6 @@ public interface ContentService {
     List<ContentVO> findContentsByUserIdANDType(Long id, Long type);
 
     void removeContentById(Long contentId);
+
+    ContentVO getContentById(Long id);
 }

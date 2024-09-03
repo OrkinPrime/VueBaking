@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class ContentDTO implements Serializable {
+    private Long id;
     private String title;
     private String imgUrl;
     private String videoUrl;

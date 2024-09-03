@@ -13,17 +13,17 @@ public class ContentVO implements Serializable {
     private Long id;
     private String title;
     private String imgUrl;
-    //private String videoUrl;
-    //private String content;
+    private String videoUrl;
+    private String content;
     private Long type;
     private Integer viewCount;
     private Integer commentCount;
     private String categoryName;
     //    private Long createBy;
-    @JsonFormat(pattern = "yyyy/mm/dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy/mm/dd", timezone = "GMT+8")
     private LocalDateTime createTime;
     //    private Long updateBy;
 //    private LocalDateTime updateTime;
     private String brief;
-//    private Long categoryId;
+    private Long categoryId;
 }

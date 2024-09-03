@@ -25,7 +25,6 @@ public class ContentController {
     @GetMapping("/{id}/{type}")
     public JsonResult getContents(@PathVariable Long id, @PathVariable Long type) {
         List<ContentVO> list = contentService.findContentsByUserIdANDType(id,type);
-        System.out.println(list);
         return JsonResult.ok(list);
     }
 
@@ -33,5 +32,12 @@ public class ContentController {
     public JsonResult removeContent(@PathVariable Long id) {
         contentService.removeContentById(id);
         return JsonResult.ok();
+    }
+
+    @GetMapping("/{id}/content")
+    public JsonResult getContent(@PathVariable Long id) {
+        ContentVO contentVO = contentService.getContentById(id);
+        System.out.println(contentVO);
+        return JsonResult.ok(contentVO);
     }
 }

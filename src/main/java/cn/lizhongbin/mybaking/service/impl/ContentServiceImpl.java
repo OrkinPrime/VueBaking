@@ -33,15 +33,28 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public void addContent(ContentDTO contentDTO) {
+        Integer result;
         Content content = new Content();
         BeanUtils.copyProperties(contentDTO, content);
-        content.setCreateTime(LocalDateTime.now());
-        content.setCommentCount(0);
-        content.setViewCount(0);
-        Integer result = contentMapper.insertContent(content);
-        if (result != 1) {
-            throw new ServiceException(ServiceCode.ERR_INSERT, "内容发布失败");
+        if (contentDTO.getId() == null) {
+            content.setCreateTime(LocalDateTime.now());
+            content.setCommentCount(0);
+            content.setViewCount(0);
+            result = contentMapper.insertContent(content);
+            if (result != 1) {
+                throw new ServiceException(ServiceCode.ERR_INSERT, "内容发布失败");
+            }
+        } else {
+            content.setUpdateTime(LocalDateTime.now());
+            content.setUpdateBy(contentDTO.getCreateBy());
+           result= commentMapper.updateContent(content);
+            if (result != 1) {
+                throw new ServiceException(ServiceCode.ERR_INSERT, "内容修改失败");
+            }
+
         }
+
+
     }
 
     @Override
@@ -56,24 +69,28 @@ public class ContentServiceImpl implements ContentService {
     @Override
     @Transactional          //自动开启事务，把此方法体内的流程当做一个完整的事务，整体执行或者回滚
     public void removeContentById(Long contentId) {
-        System.out.println("需要删除的contentId:" + contentId);
         commentMapper.deleteCommentsByContentId(contentId); //删除相关评论
         //删除对应的img文件
         String imgUrl = contentMapper.selectImgUrlByContentId(contentId);
         if (imgUrl != null) {
-            System.out.println(imgUrl);
             new File(fileUrl + "/images" + imgUrl).delete();
-
         }
         //删除对应的video文件
         String videoUrl = contentMapper.selectVideoUrlByContentId(contentId);
         if (videoUrl != null) {
-            System.out.println(videoUrl);
             new File(fileUrl + "/videos" + videoUrl).delete();
         }
         //删除内容
         if (contentMapper.deleteContentsById(contentId) != 1) {
             throw new ServiceException(ServiceCode.ERR_DELETE, "删除失败！");
         }
+    }
+
+    @Override
+    public ContentVO getContentById(Long id) {
+        ContentVO contentVO = contentMapper.selectContentById(id);
+        if (contentVO == null)
+            throw new ServiceException(ServiceCode.ERR_SELECT, "内容获取失败！");
+        return contentVO;
     }
 }

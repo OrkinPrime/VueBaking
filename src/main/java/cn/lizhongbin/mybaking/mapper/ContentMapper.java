@@ -15,4 +15,6 @@ public interface ContentMapper {
     String selectImgUrlByContentId(Long contentId);
 
     String selectVideoUrlByContentId(Long contentId);
+
+    ContentVO selectContentById(Long id);
 }

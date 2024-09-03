@@ -38,15 +38,73 @@
                 DESC
     </select>
     <delete id="deleteContentsById">
-        delete from t_content where id = #{contentId}
+        delete
+        from t_content
+        where id = #{contentId}
     </delete>
     <delete id="deleteCommentsByContentId">
-        delete from t_comment where content_id = #{contentId}
+        delete
+        from t_comment
+        where content_id = #{contentId}
     </delete>
     <select id="selectImgUrlByContentId">
-        select t_content.img_url from t_content where id = #{contentId}
+        select t_content.img_url
+        from t_content
+        where id = #{contentId}
     </select>
     <select id="selectVideoUrlByContentId">
-        select t_content.video_url from t_content where id = #{contentId}
+        select t_content.video_url
+        from t_content
+        where id = #{contentId}
     </select>
+    <select id="selectContentById" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentVO">
+        select id,
+               title,
+               img_url,
+               video_url,
+               content,
+               type,
+               category_id
+        from t_content
+        where id = #{id}
+    </select>
+    <update id="updateContent">
+        update t_content
+        <set>
+            <if test="title!=null">
+                title = #{title},
+            </if>
+            <if test="imgUrl!=null">
+                img_url= #{imgUrl},
+            </if>
+            <if test="videoUrl!=null">
+                video_url = #{videoUrl},
+            </if>
+            <if test="type!=null">
+                type = #{type},
+            </if>
+            <if test="category_id!=null">
+                category_id= #{category_id},
+            </if>
+            <if test="content!=null">
+                content = #{content},
+            </if>
+            <if test="brief!=null">
+                brief = #{brief},
+            </if>
+            <if test="updateTime!=null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateBy!=null">
+                update_by = #{updateBy},
+            </if>
+            <if test="viewCount!=null">
+                view_count = #{viewCount},
+            </if>
+            <if test="commentCount!=null">
+                comment_count = #{commentCount}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
