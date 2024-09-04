@@ -6,6 +6,4 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CommentMapper {
     void deleteCommentsByContentId(Long contentId);
-
-    Integer updateContent(Content content);
 }

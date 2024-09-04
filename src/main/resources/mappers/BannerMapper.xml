@@ -3,5 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lizhongbin.mybaking.mapper.BannerMapper">
-
+    <select id="selectAllBanner" resultType="cn.lizhongbin.mybaking.pojo.vo.BannerVO">
+        select t_banner.id,t_banner.img_url from t_banner order by sort
+    </select>
 </mapper>

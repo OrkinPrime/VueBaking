@@ -83,8 +83,8 @@
             <if test="type!=null">
                 type = #{type},
             </if>
-            <if test="category_id!=null">
-                category_id= #{category_id},
+            <if test="categoryId!=null">
+                category_id= #{categoryId},
             </if>
             <if test="content!=null">
                 content = #{content},
@@ -107,4 +107,77 @@
         </set>
         where id = #{id}
     </update>
+    <select id="selectForIndex" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentIndexVO">
+        select t1.id,t1.title,t1.img_url as contentImgUrl,t2.nickname,t2.img_url as userImgUrl,t3.name as categoryName
+        from t_content t1
+        join t_user t2 on t1.create_by = t2.id
+        join t_category t3 on t1.category_id = t3.id
+        where t1.type = #{type}
+        <if test="categoryId!=0">
+            and t1.category_id = #{categoryId}
+        </if>
+        order by t1.create_time DESC Limit 4
+    </select>
+    <select id="selectContentsByType" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentIndexVO">
+        select t1.id,
+               t1.title,
+               t1.img_url as contentImgUrl,
+               t2.nickname,
+               t2.img_url as userImgUrl,
+               t3.name    as categoryName
+        from t_content t1
+                 join t_user t2 on t1.create_by = t2.id
+                 join t_category t3 on t1.category_id = t3.id
+        where t1.type = #{type}
+        order by t1.create_time DESC
+    </select>
+    <select id="selectContentsByKeyword" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentIndexVO">
+        select t1.id,
+               t1.title,
+               t1.img_url as contentImgUrl,
+               t2.nickname,
+               t2.img_url as userImgUrl,
+               t3.name    as categoryName
+        from t_content t1
+                 join t_user t2 on t1.create_by = t2.id
+                 join t_category t3 on t1.category_id = t3.id
+        where t1.title like concat('%', '#{kw}', '%')
+        order by t1.create_time DESC
+    </select>
+    <select id="selectContentDetailById" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentDetailVO">
+        select tc.id,
+               title,
+               brief,
+               video_url,
+               content,
+               view_count,
+               tc.create_time,
+               tu.nickname,
+               tu.img_url userImageUrl,
+               tu.id userId,
+               tc.type
+        from t_content tc
+                 join t_user tu on tc.create_by = tu.id
+        where tc.id = #{id}
+    </select>
+    <update id="updateViewCount">
+        update t_content set view_count = #{viewCount} where id = #{id}
+    </update>
+    <select id="selectOtherContentById" resultType="cn.lizhongbin.mybaking.pojo.vo.OtherContentVO">
+        select id, title, img_url, create_time
+        from t_content
+        where t_content.create_by = #{userId}
+          and id != #{id}
+        order by create_time
+        limit 4
+    </select>
+
+    <select id="selectHotContentById" resultType="cn.lizhongbin.mybaking.pojo.vo.OtherContentVO">
+        select id, title, img_url, create_time
+        from t_content
+        where id != #{id}
+        order by view_count
+                DESC
+        limit 4
+    </select>
 </mapper>

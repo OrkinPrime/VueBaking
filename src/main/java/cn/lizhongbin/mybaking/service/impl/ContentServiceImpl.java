@@ -4,8 +4,11 @@ import cn.lizhongbin.mybaking.exception.ServiceException;
 import cn.lizhongbin.mybaking.mapper.CommentMapper;
 import cn.lizhongbin.mybaking.mapper.ContentMapper;
 import cn.lizhongbin.mybaking.pojo.dto.ContentDTO;
+import cn.lizhongbin.mybaking.pojo.vo.ContentDetailVO;
+import cn.lizhongbin.mybaking.pojo.vo.ContentIndexVO;
 import cn.lizhongbin.mybaking.pojo.vo.ContentVO;
 import cn.lizhongbin.mybaking.pojo.entity.Content;
+import cn.lizhongbin.mybaking.pojo.vo.OtherContentVO;
 import cn.lizhongbin.mybaking.response.ServiceCode;
 import cn.lizhongbin.mybaking.service.ContentService;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -47,7 +52,7 @@ public class ContentServiceImpl implements ContentService {
         } else {
             content.setUpdateTime(LocalDateTime.now());
             content.setUpdateBy(contentDTO.getCreateBy());
-           result= commentMapper.updateContent(content);
+            result = contentMapper.updateContent(content);
             if (result != 1) {
                 throw new ServiceException(ServiceCode.ERR_INSERT, "内容修改失败");
             }
@@ -92,5 +97,56 @@ public class ContentServiceImpl implements ContentService {
         if (contentVO == null)
             throw new ServiceException(ServiceCode.ERR_SELECT, "内容获取失败！");
         return contentVO;
+    }
+
+    @Override
+    public List<ContentIndexVO> findContentIndexAll(Long type, Long categoryId) {
+        return contentMapper.selectForIndex(type, categoryId);
+    }
+
+    @Override
+    public List<ContentIndexVO> findContentListByType(Long type) {
+        return contentMapper.selectContentsByType(type);
+    }
+
+    @Override
+    public List<ContentIndexVO> findContentListByKeyword(String kw) {
+        List<ContentIndexVO> list = contentMapper.selectContentsByKeyword(kw);
+        if (list != null) {
+            return Collections.emptyList();
+        } else {
+            throw new ServiceException(ServiceCode.ERR_SELECT, "搜索结果为空，请重新输入关键词！");
+        }
+    }
+
+    @Override
+    public ContentDetailVO findContentDetailById(Long id) {
+        ContentDetailVO contentDetailVO = contentMapper.selectContentDetailById(id);
+        if (contentDetailVO == null) {
+            throw new ServiceException(ServiceCode.ERR_SELECT, "内容获取失败！");
+        }
+        Integer viewCount = contentDetailVO.getViewCount();
+        int result = ++viewCount;
+        contentDetailVO.setViewCount(result);
+        contentMapper.updateViewCount(result,contentDetailVO.getId());
+        return contentDetailVO;
+    }
+
+    @Override
+    public List<OtherContentVO> findOtherContent(Long userId,Long id) {
+        List<OtherContentVO> list = contentMapper.selectOtherContentById(userId,id);
+        if(list == null || list.size() == 0) {
+            throw new ServiceException(ServiceCode.ERR_SELECT,"其他文章获取失败！");
+        }
+        return list;
+    }
+
+    @Override
+    public List<OtherContentVO> findHotContent(Long id) {
+        List<OtherContentVO> list = contentMapper.selectHotContentById(id);
+        if(list == null || list.size() == 0) {
+            throw new ServiceException(ServiceCode.ERR_SELECT,"其他热门文章获取失败！");
+        }
+        return list;
     }
 }
