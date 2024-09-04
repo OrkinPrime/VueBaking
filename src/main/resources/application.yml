@@ -21,4 +21,6 @@ mybatis:
     map-underscore-to-camel-case: true
 
 local:
-  address: D:/web/Vue/Java/myBaking/op/images
+  address:
+    images: D:/web/Vue/Java/myBaking/op/images
+    videos: D:/web/Vue/Java/myBaking/op/videos/
