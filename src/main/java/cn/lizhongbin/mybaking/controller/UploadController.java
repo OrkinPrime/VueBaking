@@ -48,12 +48,14 @@ public class UploadController {
         String filename = file.getOriginalFilename();
         //截取类型名
         String lastName = filename.substring(filename.lastIndexOf("."));    //substring字符串截取（传入截取位置），lastIndexOf（获取位置）一个参数，自参数向后截取；两个参数，含头不含尾
+
         //生成文件名
         filename = UUID.randomUUID() + lastName;                                //UUID.randomUUID生成随机不重复的名字
 
         //生成文件日期分类路径
         Format simpleDateFormat = new SimpleDateFormat("/yyyy/MM/dd/");
         String dateUrl = simpleDateFormat.format(new Date());
+
 
         //拼接最终文件路径
         String allUrl = fileUrl + dateUrl;
