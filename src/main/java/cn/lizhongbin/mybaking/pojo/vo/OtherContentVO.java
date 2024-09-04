@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class OtherContentVO implements Serializable {
-    private int id;
+    private Long id;
     private String title;
     private String imgUrl;
-
+    private Integer viewCount;
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
 }

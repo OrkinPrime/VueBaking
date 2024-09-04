@@ -113,7 +113,7 @@ public class ContentServiceImpl implements ContentService {
     public List<ContentIndexVO> findContentListByKeyword(String kw) {
         List<ContentIndexVO> list = contentMapper.selectContentsByKeyword(kw);
         if (list != null) {
-            return Collections.emptyList();
+            return list;
         } else {
             throw new ServiceException(ServiceCode.ERR_SELECT, "搜索结果为空，请重新输入关键词！");
         }

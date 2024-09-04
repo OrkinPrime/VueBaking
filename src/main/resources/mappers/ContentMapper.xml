@@ -141,7 +141,7 @@
         from t_content t1
                  join t_user t2 on t1.create_by = t2.id
                  join t_category t3 on t1.category_id = t3.id
-        where t1.title like concat('%', '#{kw}', '%')
+        where t1.title like concat('%', #{kw}, '%')
         order by t1.create_time DESC
     </select>
     <select id="selectContentDetailById" resultType="cn.lizhongbin.mybaking.pojo.vo.ContentDetailVO">
@@ -173,7 +173,7 @@
     </select>
 
     <select id="selectHotContentById" resultType="cn.lizhongbin.mybaking.pojo.vo.OtherContentVO">
-        select id, title, img_url, create_time
+        select id, title, img_url, create_time,view_count
         from t_content
         where id != #{id}
         order by view_count
