@@ -1,4 +1,4 @@
-课程的后端项目，前端使用HBuilderX编写
+课程的后端项目，[前端](https://github.com/OrkinPrime/VueBaking_front) 使用HBuilderX编写
 
 前端知识点汇总：
 
