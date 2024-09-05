@@ -1,5 +1,7 @@
 课程的后端项目，[前端](https://github.com/OrkinPrime/VueBaking_front) 使用HBuilderX编写
 
+注意！部署时请将数据库重新配置！
+
 前端知识点汇总：
 
         <script setup>
